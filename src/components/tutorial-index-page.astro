@@ -1,0 +1,118 @@
+---
+import Pagination from "@/components/pagination.astro";
+import SearchBar from "@/components/search-bar.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  title: string;
+  description: string;
+  entries: Array<CollectionEntry<"ts">>;
+  language: "TypeScript";
+  path: "ts";
+  keywords: string;
+  page: number;
+  totalPages: number;
+}
+
+const {
+  title,
+  description,
+  entries,
+  language,
+  path,
+  keywords,
+  page = 1,
+  totalPages,
+} = Astro.props;
+
+const ITEMS_PER_PAGE = 10;
+const start = (page - 1) * ITEMS_PER_PAGE;
+const end = start + ITEMS_PER_PAGE;
+const sortedEntries = entries.sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+const paginatedEntries = sortedEntries.slice(start, end);
+const breadcrumbs = [
+  { title: "Trang chủ", href: "/" },
+  { title: "Tài liệu", href: `/muc-luc`, current: true },
+];
+---
+
+<MainLayout {title} {description} {keywords}>
+  <main class="container mx-auto px-4 py-8">
+    <nav class="mb-8 flex" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        {
+          breadcrumbs.map((item, index) => (
+            <li class="inline-flex items-center">
+              {index > 0 && (
+                <Icon
+                  name="mdi:chevron-right"
+                  class="mx-2 h-4 w-4 text-dracula-comment"
+                />
+              )}
+              <a
+                href={item.href}
+                class={`inline-flex items-center text-sm ${
+                  item.current
+                    ? "text-dracula-purple"
+                    : "text-dracula-comment hover:text-dracula-foreground"
+                }`}
+                aria-current={item.current ? "page" : undefined}
+              >
+                {item.title}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="mx-auto max-w-4xl">
+      <h1
+        class="mb-8 text-dracula-gradient font-bold text-4xl md:text-5xl"
+      >
+        {language}
+      </h1>
+      <p class="mb-12 text-xl text-dracula-comment">
+        Tài liệu {language} đầy đủ và dễ hiểu bằng tiếng Việt. Tham khảo các ví dụ
+        thực tế.
+      </p>
+
+      <div class="mb-8">
+        <SearchBar />
+      </div>
+
+      <div class="grid gap-6">
+        {
+          paginatedEntries.map((entry) => (
+            <a
+              href={`/${path}/${entry.slug}`}
+              class="group rounded-lg border border-dracula-current p-6 transition-all duration-300 hover:border-dracula-purple hover:bg-dracula-current/50"
+            >
+              <article>
+                <h2 class="mb-3 text-2xl font-semibold text-dracula-foreground transition-colors group-hover:text-dracula-purple">
+                  {entry.data.title}
+                </h2>
+                <p class="text-dracula-comment group-hover:text-dracula-foreground/90">
+                  {entry.data.description}
+                </p>
+              </article>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="mt-12">
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          basePath={`/muc-luc`}
+        />
+      </div>
+    </div>
+  </main>
+</MainLayout>

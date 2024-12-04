@@ -1,0 +1,61 @@
+---
+import FeatureCard from "@/components/feature-card.astro";
+import HeroSection from "@/components/hero-section.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+
+
+
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+const features: readonly Feature[] = [
+  {
+    title: "Mã Nguồn Mở",
+    description: "Hoàn toàn miễn phí và có thể đóng góp",
+    icon: "mdi:book-open-page-variant"
+  },
+  {
+    title: "Dễ Tiếp Cận",
+    description: "Nội dung tiếng Việt rõ ràng, dễ hiểu",
+    icon: "mdi:translate"
+  },
+  {
+    title: "Luôn Cập Nhật",
+    description: "Nội dung được cập nhật thường xuyên",
+    icon: "mdi:update"
+  }
+] as const;
+---
+
+<MainLayout
+  title="Tài Liệu TypeScript | OvFTeam"
+  description="Tài liệu TypeScript miễn phí bằng tiếng Việt. Nội dung đầy đủ, dễ hiểu, phù hợp cho mọi trình độ."
+  keywords="tài liệu typescript, typescript tiếng việt, tham khảo typescript, lập trình web"
+>
+  <main class="relative">
+    <div class="relative container mx-auto px-4 py-24">
+      <HeroSection />
+
+
+
+      <section class="mx-auto max-w-4xl mt-32">
+        <div class="text-center mb-16">
+          <span class="inline-block text-dracula-purple font-medium mb-4">Tại sao chọn chúng tôi?</span>
+          <h2 class="text-3xl md:text-4xl font-bold">
+            <span class="bg-gradient-to-r from-dracula-purple to-dracula-pink bg-clip-text text-transparent">
+              Tài Liệu Chất Lượng
+            </span>
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          {features.map((feature) => (
+            <FeatureCard {...feature} />
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</MainLayout>

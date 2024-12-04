@@ -1,0 +1,174 @@
+---
+import MainLayout from "@/layouts/main-layout.astro";
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const tsEntries = await getCollection("ts");
+  return tsEntries.map((entry: CollectionEntry<"ts">) => ({
+    params: {
+      slug: entry.slug.replace(/^\/+|\/+$/g, ""),
+    },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"ts">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const tsEntries = await getCollection("ts");
+const breadcrumbs = [
+  { title: "Trang chủ", href: "/" },
+  { title: "TypeScript", href: "/typescript" },
+  { title: entry.data.title, href: `/ts/${entry.slug}`, current: true },
+];
+const currentIndex = tsEntries.findIndex(
+  (e: CollectionEntry<"ts">) => e.slug === entry.slug,
+);
+const prevEntry = currentIndex > 0 ? tsEntries[currentIndex - 1] : null;
+const nextEntry =
+  currentIndex < tsEntries.length - 1 ? tsEntries[currentIndex + 1] : null;
+---
+
+<MainLayout
+  title={`${entry.data.title} | TypeScript`}
+  description={entry.data.description}
+  keywords={`typescript, ${entry.data.title.toLowerCase()}, lập trình web`}
+>
+  <main class="container mx-auto px-4 py-8">
+    <nav class="mb-8 flex" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        {
+          breadcrumbs.map((item, index) => (
+            <li class="inline-flex items-center">
+              {index > 0 && (
+                <Icon
+                  name="mdi:chevron-right"
+                  class="mx-2 h-4 w-4 text-dracula-comment"
+                />
+              )}
+              <a
+                href={item.href}
+                class={`inline-flex items-center text-sm ${
+                  item.current
+                    ? "text-dracula-purple"
+                    : "text-dracula-comment hover:text-dracula-foreground"
+                }`}
+                aria-current={item.current ? "page" : undefined}
+              >
+                {item.title}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <article
+      class="prose prose-invert mx-auto max-w-4xl prose-headings:text-dracula-purple prose-a:text-dracula-cyan hover:prose-a:text-dracula-pink prose-strong:text-dracula-pink prose-code:text-dracula-green prose-pre:bg-dracula-current [&_img]:!-mx-4 [&_img]:max-w-none [&_img]:md:!-mx-8 [&_img]:lg:!-mx-16"
+    >
+      <h1
+        class="mb-0 bg-gradient-to-r from-dracula-purple to-dracula-pink bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
+      >
+        {entry.data.title}
+      </h1>
+      <h3
+        class="my-0 mb-4 prose-headings:text-sm prose-headings:text-dracula-comment"
+      >
+        {entry.data.description}
+      </h3>
+      <Content />
+    </article>
+    <nav class="mx-auto mt-16 max-w-4xl">
+      <div class="flex flex-col gap-4 sm:flex-row sm:justify-between">
+        {
+          prevEntry && (
+            <a
+              href={`/ts/${prevEntry.slug}`}
+              class="group flex items-center gap-2 rounded-lg border border-dracula-current p-4 transition-all hover:border-dracula-purple hover:bg-dracula-current/50"
+            >
+              <Icon
+                name="mdi:arrow-left"
+                class="h-5 w-5 text-dracula-comment transition-all group-hover:text-dracula-purple"
+              />
+              <div>
+                <div class="text-sm text-dracula-comment">Bài trước</div>
+                <div class="text-dracula-foreground group-hover:text-dracula-purple">
+                  {prevEntry.data.title}
+                </div>
+              </div>
+            </a>
+          )
+        }
+
+        {
+          nextEntry && (
+            <a
+              href={`/ts/${nextEntry.slug}`}
+              class="group flex items-center gap-2 rounded-lg border border-dracula-current p-4 transition-all hover:border-dracula-purple hover:bg-dracula-current/50 sm:ml-auto"
+            >
+              <div class="text-right">
+                <div class="text-sm text-dracula-comment">Bài tiếp theo</div>
+                <div class="text-dracula-foreground group-hover:text-dracula-purple">
+                  {nextEntry.data.title}
+                </div>
+              </div>
+              <Icon
+                name="mdi:arrow-right"
+                class="h-5 w-5 text-dracula-comment transition-all group-hover:text-dracula-purple"
+              />
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  </main>
+</MainLayout>
+
+<style>
+  :global(.prose pre) {
+    @apply relative rounded-lg border border-dracula-current/20 pt-8;
+  }
+
+  :global(.prose pre code) {
+    @apply pt-0;
+  }
+
+  :global(.prose pre::before) {
+    content: attr(data-language);
+    @apply absolute left-2 top-2 text-xs uppercase tracking-wide select-none;
+    @apply bg-dracula-purple/20 text-dracula-purple;
+    @apply px-2 py-0.5 rounded-md font-medium;
+  }
+
+  :global(.copy-button) {
+    @apply absolute right-2 top-2 block rounded-md px-2 py-0.5 text-xs font-medium select-none;
+    @apply bg-dracula-current/50 text-dracula-comment;
+    @apply hover:bg-dracula-current hover:text-dracula-purple;
+  }
+</style>
+
+<script>
+  const codeBlocks = document.querySelectorAll('pre code');
+
+  codeBlocks.forEach((codeBlock) => {
+    const wrapper = codeBlock.parentElement;
+    const copyButton = document.createElement('button');
+    copyButton.className = 'copy-button';
+    copyButton.textContent = 'Sao chép';
+
+    copyButton.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(codeBlock.textContent || '');
+      copyButton.textContent = 'Đã sao chép!';
+
+      setTimeout(() => {
+        copyButton.textContent = 'Sao chép';
+      }, 1000);
+    });
+
+    wrapper?.appendChild(copyButton);
+  });
+</script>

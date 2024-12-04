@@ -1,0 +1,75 @@
+---
+import favicon from "@/assets/favicon/favicon.ico";
+import Header from "@/components/header.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  author?: string;
+  keywords?: string;
+}
+const canonicalURL = "https://learn-ts.ovfteam.com";
+const { title, description, ogImage = "https://ovfteam.com/og-image.png", keywords } = Astro.props;
+
+const seoTitle = title.length > 60 ? title.substring(0, 57) + "..." : title;
+const seoDescription =
+  description.length > 160
+    ? description.substring(0, 157) + "..."
+    : description;
+---
+
+<!doctype html>
+<html lang="vi" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/x-icon" href={favicon} />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>{seoTitle}</title>
+    <meta name="title" content={seoTitle} />
+    <meta name="description" content={seoDescription} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="author" content="ovftank" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={seoTitle} />
+    <meta property="twitter:description" content={seoDescription} />
+    <meta property="twitter:image" content={ogImage} />
+    <meta name="robots" content="index, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="google" content="notranslate" />
+  </head>
+  <body class="relative bg-dracula-background font-jet-brains-mono text-dracula-foreground selection:bg-dracula-cyan selection:text-dracula-background min-h-screen">
+    <div class="fixed inset-0 pointer-events-none">
+      <div
+        class="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-80
+        [mask-image:linear-gradient(to_bottom,transparent,white_15%,white_85%,transparent)]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-dracula-background/90 via-transparent to-dracula-background/90" />
+      <div class="absolute inset-0 bg-gradient-to-r from-dracula-background/60 via-transparent to-dracula-background/60" />
+    </div>
+    <div class="relative z-10">
+      <Header />
+      <slot />
+    </div>
+  </body>
+</html>

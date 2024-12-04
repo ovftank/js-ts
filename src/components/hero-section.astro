@@ -1,0 +1,63 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface QuickLink {
+  title: string;
+  href: string;
+  description: string;
+  icon: string;
+  iconColor?: string;
+}
+---
+
+<section class="mx-auto max-w-4xl px-4 sm:px-6">
+  <div class="mb-8 space-y-4 text-center sm:mb-20 sm:space-y-8">
+    <div class="space-y-2 sm:space-y-4">
+      <h1
+        class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl"
+      >
+        <span
+          class="mb-1 inline-block text-base font-medium text-dracula-purple sm:mb-2 sm:text-xl"
+          >Tài Liệu Tham Khảo</span
+        >
+        <br />
+        <span
+          class="text-dracula-gradient text-4xl sm:text-4xl md:text-5xl lg:text-6xl"
+          >TypeScript</span
+        >
+      </h1>
+
+      <p
+        class="mx-auto max-w-2xl px-2 text-base leading-relaxed sm:text-center sm:text-lg md:text-xl"
+      >
+        Tài liệu <span class="text-dracula-gradient font-medium">đầy đủ</span> và
+        <span class="text-dracula-gradient font-medium">dễ hiểu</span> về ngôn ngữ
+        <span class="text-dracula-gradient font-medium">TypeScript</span>.
+      </p>
+    </div>
+
+    <div
+      class="flex select-none flex-col justify-center gap-3 px-2 sm:flex-row sm:gap-6 sm:px-4"
+    >
+      <a
+        href="/muc-luc"
+        class="bg-dracula-gradient group inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm text-white shadow-lg shadow-dracula-purple/20 transition-all duration-300 hover:opacity-90 sm:px-8 sm:py-4 sm:text-base"
+      >
+        <span class="font-medium">Xem Tài Liệu</span>
+        <Icon
+          name="mdi:arrow-right"
+          class="h-4 w-4 transition-transform group-hover:translate-x-1 sm:h-5 sm:w-5"
+        />
+      </a>
+      <a
+        href="https://github.com/ovftank/learn-ts/tree/main/src/content"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-dracula-purple px-5 py-2.5 text-sm text-dracula-purple transition-colors hover:bg-dracula-purple/10 sm:px-8 sm:py-4 sm:text-base"
+      >
+        <Icon name="mdi:github" class="h-4 w-4 sm:h-5 sm:w-5" />
+        <span class="font-medium">Mã Nguồn</span>
+      </a>
+    </div>
+  </div>
+</section>

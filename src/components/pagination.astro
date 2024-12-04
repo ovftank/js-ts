@@ -1,0 +1,29 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+}
+
+const { currentPage, totalPages, basePath } = Astro.props;
+
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+<nav class="flex justify-center gap-2" aria-label="Pagination">
+  {
+    pages.map((page) => (
+      <a
+        href={page === 1 ? basePath : `${basePath}/page/${page}`}
+        class={`px-4 py-2 rounded-md transition-colors ${
+          currentPage === page
+            ? "bg-dracula-purple text-white"
+            : "text-dracula-comment hover:text-dracula-foreground hover:bg-dracula-current/50"
+        }`}
+        aria-current={currentPage === page ? "page" : undefined}
+      >
+        {page}
+      </a>
+    ))
+  }
+</nav>

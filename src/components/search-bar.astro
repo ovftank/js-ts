@@ -1,0 +1,36 @@
+---
+import { Icon } from "astro-icon/components";
+---
+<div class="relative">
+  <input
+    type="text"
+    id="search"
+    placeholder="Tìm kiếm tài liệu..."
+    class="w-full rounded-lg border border-dracula-current bg-dracula-current/20 px-4 py-2 text-dracula-foreground placeholder:text-dracula-comment focus:border-dracula-purple focus:outline-none"
+  />
+  <Icon
+    name="mdi:magnify"
+    class="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-dracula-comment"
+  />
+</div>
+
+<script>
+  const searchInput = document.getElementById('search') as HTMLInputElement;
+  const articles = document.querySelectorAll('article');
+
+  searchInput?.addEventListener('input', (e) => {
+    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+
+    articles.forEach((article) => {
+      const title = article.querySelector('h2')?.textContent?.toLowerCase() || '';
+      const description = article.querySelector('p')?.textContent?.toLowerCase() || '';
+      const parent = article.parentElement;
+
+      if (title.includes(searchTerm) || description.includes(searchTerm)) {
+        parent?.classList.remove('hidden');
+      } else {
+        parent?.classList.add('hidden');
+      }
+    });
+  });
+</script>

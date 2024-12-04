@@ -1,0 +1,32 @@
+---
+import TutorialIndexPage from "@/components/tutorial-index-page.astro";
+import type { GetStaticPaths, Page, PaginateFunction } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+const tsEntries = await getCollection("ts");
+const ITEMS_PER_PAGE = 10;
+const totalPages = Math.ceil(tsEntries.length / ITEMS_PER_PAGE);
+
+export const getStaticPaths: GetStaticPaths = async ({
+  paginate,
+}: {
+  paginate: PaginateFunction;
+}) => {
+  const tsEntries = await getCollection("ts");
+  return paginate(tsEntries, { pageSize: ITEMS_PER_PAGE });
+};
+
+const { page } = Astro.props as { page: Page<CollectionEntry<"ts">> };
+---
+
+<TutorialIndexPage
+  title="Mục lục"
+  description="Mục lục tài liệu TypeScript đầy đủ bằng tiếng Việt"
+  keywords="typescript, ts documentation, tài liệu typescript, lập trình web, frontend development"
+  entries={tsEntries}
+  language="TypeScript"
+  path="ts"
+  page={page?.currentPage || 1}
+  totalPages={totalPages}
+/>

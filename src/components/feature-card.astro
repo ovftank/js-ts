@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+const { title, description, icon } = Astro.props;
+---
+
+<div class="relative group p-8 rounded-xl border border-dracula-current/10 bg-dracula-background/50 hover:shadow-xl hover:shadow-dracula-purple/5 transition-all duration-300">
+  <div class="space-y-4">
+    <div class="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-dracula-purple/10">
+      <Icon
+        name={icon}
+        class="w-8 h-8 text-dracula-purple group-hover:text-dracula-pink transition-all duration-300 group-hover:scale-110"
+      />
+    </div>
+    <div class="space-y-2">
+      <h3 class="text-xl font-semibold text-dracula-foreground group-hover:text-dracula-pink transition-colors">
+        {title}
+      </h3>
+      <p class="text-dracula-comment group-hover:text-dracula-foreground transition-colors leading-relaxed">
+        {description}
+      </p>
+    </div>
+  </div>
+</div>

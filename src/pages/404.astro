@@ -1,0 +1,99 @@
+---
+import MainLayout from "@/layouts/main-layout.astro";
+import { Icon } from "astro-icon/components";
+
+const contactInfo = [
+  {
+    title: "Telegram",
+    href: "https://t.me/ovftank",
+    username: "@ovftank",
+    icon: "mdi:telegram"
+  },
+  {
+    title: "Email",
+    href: "mailto:admin@ovfteam.com",
+    username: "admin@ovfteam.com",
+    icon: "mdi:email"
+  },
+  {
+    title: "Facebook",
+    href: "https://facebook.com/ovftank",
+    username: "facebook.com/ovftank",
+    icon: "mdi:facebook"
+  },
+  {
+    title: "GitHub",
+    href: "https://github.com/ovftank",
+    username: "github.com/ovftank",
+    icon: "mdi:github"
+  }
+] as const;
+---
+
+<MainLayout
+  title="404 - Trang không tồn tại | OvFTeam"
+  description="Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển."
+>
+  <main class="container mx-auto flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 py-8">
+    <div class="text-center">
+      <div class="mb-8 flex items-center justify-center gap-4">
+        <Icon
+          name="mdi:ghost"
+          class="h-20 w-20 animate-bounce text-dracula-purple hover:scale-110 transition-transform duration-300"
+        />
+        <span class="text-8xl font-bold text-dracula-pink animate-pulse">404</span>
+      </div>
+
+      <h1 class="mb-4 text-2xl font-bold text-dracula-foreground hover:text-dracula-purple transition-colors">
+        Oops! Trang này không tồn tại
+      </h1>
+
+      <p class="mb-8 text-dracula-comment animate-fade-in">
+        Trang bạn đang tìm kiếm có thể đã bị di chuyển hoặc không còn tồn tại.
+      </p>
+
+      <div class="mb-8 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+        {contactInfo.map(contact => (
+          <a
+            href={contact.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-2 rounded-lg border border-dracula-current p-4 text-left transition-all duration-300 hover:bg-dracula-background hover:scale-105 hover:shadow-lg"
+          >
+            <Icon
+              name={contact.icon}
+              class="h-5 w-5 text-dracula-cyan transition-transform duration-300 group-hover:rotate-12"
+            />
+            <div>
+              <h2 class="text-sm font-semibold text-dracula-cyan group-hover:text-dracula-purple transition-colors">
+                {contact.title}
+              </h2>
+              <p class="text-sm text-dracula-comment group-hover:text-dracula-foreground transition-colors">
+                {contact.username}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-lg bg-dracula-purple px-6 py-3 font-semibold text-dracula-background transition-all duration-300 hover:bg-dracula-pink hover:scale-105 hover:shadow-lg"
+      >
+        <Icon name="mdi:home" class="h-5 w-5" />
+        Về trang chủ
+      </a>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+</style>
